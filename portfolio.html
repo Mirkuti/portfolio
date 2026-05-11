@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shedrick C. Aquino — Front-End Developer Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,300;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ibm-blue: #0f62fe;
+      --ibm-blue-hover: #0353e9;
+      --ibm-cyan: #33b1ff;
+      --ibm-teal: #08bdba;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #0d0d14;
+      --bg-card: #111118;
+      --bg-card-hover: #161622;
+      --border: rgba(15, 98, 254, 0.2);
+      --border-subtle: rgba(255,255,255,0.06);
+      --text-primary: #f4f4f4;
+      --text-secondary: #a8a8b3;
+      --text-muted: #525260;
+      --accent-glow: rgba(15, 98, 254, 0.35);
+      --grid-color: rgba(15, 98, 254, 0.04);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      transition: padding 0.3s ease;
+    }
+    nav.scrolled { padding: 14px 48px; }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 600; color: var(--ibm-cyan); letter-spacing: 0.12em; text-decoration: none; }
+    .nav-logo span { color: var(--text-muted); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: var(--ibm-blue); transition: width 0.3s ease; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ibm-blue); text-decoration: none; padding: 10px 20px; border: 1px solid var(--ibm-blue); transition: all 0.25s ease; }
+    .nav-cta:hover { background: var(--ibm-blue); color: #fff; box-shadow: 0 0 24px var(--accent-glow); }
+
+    /* HERO */
+    .hero { position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 48px 80px; overflow: hidden; }
+    .hero-inner { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 64px; min-height: calc(100vh - 200px); }
+    .hero-content { display: flex; flex-direction: column; justify-content: center; }
+    .hero-photo-wrap { position: relative; width: 500px; flex-shrink: 0; align-self: center; margin-top: 0; }
+    .hero-photo-frame { position: relative; width: 500px; height: 500px; border-radius: 50%; overflow: hidden; border: 2px solid var(--border); background: var(--bg-card); box-shadow: 0 0 0 8px rgba(15,98,254,0.08), 0 0 0 16px rgba(15,98,254,0.04); }
+    .hero-photo-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; filter: grayscale(20%) contrast(1.05); transition: filter 0.4s ease, transform 0.4s ease; }
+    .hero-photo-frame:hover img { filter: grayscale(0%) contrast(1.1); transform: scale(1.04); }
+    .hero-photo-frame::after { display: none; }
+    .hero-photo-label { position: absolute; bottom: -28px; left: 0; right: 0; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); text-align: center; z-index: 3; }
+    .hero-photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: linear-gradient(135deg, rgba(15,98,254,0.08), rgba(51,177,255,0.04)); }
+    .hero-photo-placeholder span { font-size: 72px; font-weight: 700; font-family: 'IBM Plex Sans', sans-serif; color: var(--ibm-blue); line-height: 1; }
+    .hero-photo-placeholder p { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; }
+
+    .hero-eyebrow { display: flex; align-items: center; gap: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ibm-cyan); margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease 0.2s forwards; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--ibm-cyan); }
+    .hero-name { font-size: clamp(52px, 8vw, 110px); font-weight: 700; line-height: 0.92; letter-spacing: -0.02em; margin-bottom: 8px; opacity: 0; animation: fadeUp 0.9s ease 0.35s forwards; }
+    .hero-name .first { color: var(--text-primary); display: block; }
+    .hero-name .last { color: transparent; -webkit-text-stroke: 1px rgba(244,244,244,0.3); display: block; }
+    .hero-title { font-family: 'IBM Plex Serif', serif; font-style: italic; font-weight: 300; font-size: clamp(18px, 2.5vw, 28px); color: var(--text-secondary); margin: 24px 0 0; opacity: 0; animation: fadeUp 0.9s ease 0.5s forwards; }
+    .hero-title strong { color: var(--ibm-blue); font-style: normal; font-weight: 500; font-family: 'IBM Plex Sans', sans-serif; }
+    .hero-desc { max-width: 520px; font-size: 15px; line-height: 1.75; color: var(--text-secondary); margin: 28px 0 48px; opacity: 0; animation: fadeUp 0.9s ease 0.65s forwards; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s ease 0.8s forwards; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--ibm-blue); color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 16px 28px; transition: all 0.25s ease; }
+    .btn-primary:hover { background: var(--ibm-blue-hover); box-shadow: 0 8px 30px var(--accent-glow); transform: translateY(-2px); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--text-secondary); font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; padding: 16px 28px; border: 1px solid var(--border-subtle); transition: all 0.25s ease; }
+    .btn-secondary:hover { border-color: var(--ibm-blue); color: var(--ibm-blue); }
+    .hero-stats { display: flex; gap: 48px; margin-top: 48px; opacity: 0; animation: fadeUp 0.9s ease 1s forwards; }
+    .stat { text-align: left; }
+    .stat-num { font-family: 'IBM Plex Mono', monospace; font-size: 36px; font-weight: 300; color: var(--ibm-blue); line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-top: 4px; text-transform: uppercase; }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; }
+    .section-wrap { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+    .section-header { margin-bottom: 64px; }
+    .section-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ibm-blue); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .section-tag::after { content: ''; flex: 0 0 24px; height: 1px; background: var(--ibm-blue); }
+    .section-title { font-size: clamp(32px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+    .section-sub { font-size: 15px; color: var(--text-secondary); margin-top: 12px; max-width: 480px; line-height: 1.7; }
+    .divider { width: 100%; height: 1px; background: var(--border-subtle); margin: 0; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-visual { position: relative; aspect-ratio: 4/5; background: var(--bg-card); border: 1px solid var(--border-subtle); overflow: hidden; }
+    .about-visual-inner { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,98,254,0.08), rgba(51,177,255,0.04)); display: flex; align-items: center; justify-content: center; }
+    .about-visual-inner img { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 0.5s ease, filter 0.4s ease; filter: grayscale(15%) contrast(1.05); }
+    .about-visual:hover .about-visual-inner img { transform: scale(1.04); filter: grayscale(0%) contrast(1.08); }
+    .about-visual-inner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(10,10,15,0.75) 100%); pointer-events: none; }
+    .avatar-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+    .avatar-icon { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--ibm-blue), var(--ibm-cyan)); display: flex; align-items: center; justify-content: center; font-size: 48px; color: white; font-weight: 700; font-family: 'IBM Plex Sans', sans-serif; box-shadow: 0 0 40px var(--accent-glow); }
+    .avatar-name-label { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-secondary); letter-spacing: 0.1em; }
+    .about-visual-tag { position: absolute; bottom: 24px; left: 24px; right: 24px; background: rgba(15,98,254,0.15); border: 1px solid var(--border); padding: 16px; backdrop-filter: blur(10px); z-index: 2; }
+    .about-visual-tag p { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ibm-cyan); }
+    .about-visual-tag span { font-size: 13px; color: var(--text-primary); margin-top: 4px; display: block; }
+    .about-corner { position: absolute; top: 0; right: 0; width: 48px; height: 48px; border-top: 2px solid var(--ibm-blue); border-right: 2px solid var(--ibm-blue); z-index: 2; }
+    .about-corner-bl { position: absolute; bottom: 0; left: 0; width: 48px; height: 48px; border-bottom: 2px solid var(--ibm-blue); border-left: 2px solid var(--ibm-blue); z-index: 2; }
+    .about-text p { font-size: 15px; line-height: 1.8; color: var(--text-secondary); margin-bottom: 16px; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0; }
+    .tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; padding: 6px 14px; border: 1px solid var(--border); color: var(--ibm-cyan); letter-spacing: 0.08em; text-transform: uppercase; }
+    .about-detail { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+    .about-detail-icon { font-size: 16px; margin-top: 1px; }
+    .about-detail-text { font-size: 14px; color: var(--text-secondary); }
+    .about-detail-text strong { color: var(--text-primary); font-weight: 500; }
+
+    /* SKILLS */
+    .skills-section { background: var(--bg-secondary); }
+    .skills-layout { display: grid; grid-template-columns: 300px 1fr; gap: 64px; align-items: start; }
+    .skill-categories { display: flex; flex-direction: column; gap: 4px; }
+    .skill-cat-btn { background: transparent; border: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); padding: 14px 20px; text-align: left; cursor: pointer; transition: all 0.2s; border-left: 2px solid transparent; }
+    .skill-cat-btn:hover { color: var(--text-secondary); }
+    .skill-cat-btn.active { color: var(--ibm-cyan); border-left-color: var(--ibm-cyan); background: rgba(51,177,255,0.05); }
+    .skills-panel { display: none; }
+    .skills-panel.active { display: block; animation: fadeIn 0.3s ease; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+    .skill-card { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 24px; position: relative; overflow: hidden; transition: all 0.3s ease; }
+    .skill-card:hover { border-color: var(--ibm-blue); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(15,98,254,0.15); }
+    .skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--ibm-blue), var(--ibm-cyan)); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+    .skill-card:hover::before { transform: scaleX(1); }
+    .skill-icon { font-size: 28px; margin-bottom: 12px; }
+    .skill-name { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+    .skill-level-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .skill-bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .skill-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--ibm-blue), var(--ibm-cyan)); transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+
+    /* PROJECTS */
+    .projects-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 48px; }
+    .filter-btn { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; background: transparent; border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 8px 18px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: var(--ibm-blue); color: var(--ibm-blue); }
+    .filter-btn.active { background: var(--ibm-blue); border-color: var(--ibm-blue); color: #fff; }
+    .projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+    .project-card { background: var(--bg-card); border: 1px solid var(--border-subtle); overflow: hidden; transition: all 0.35s ease; cursor: pointer; position: relative; }
+    .project-card:hover { border-color: rgba(15,98,254,0.5); box-shadow: 0 16px 48px rgba(15,98,254,0.12); transform: translateY(-4px); }
+    .project-card.featured { grid-column: span 7; }
+    .project-card.regular { grid-column: span 5; }
+    .project-visual { height: 200px; position: relative; overflow: hidden; background: var(--bg-secondary); }
+    .project-card.featured .project-visual { height: 260px; }
+    .project-visual-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 64px; opacity: 0.5; transition: transform 0.5s ease, opacity 0.3s ease; }
+    .project-visual-bg img { width: 100%; height: 100%; object-fit: cover; object-position: top center; opacity: 1; font-size: 0; }
+    .project-card:hover .project-visual-bg { transform: scale(1.05); opacity: 0.85; }
+    .project-card:hover .project-visual-bg img { opacity: 1; }
+    .project-visual-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, var(--bg-card) 100%); }
+    .project-badge { position: absolute; top: 16px; left: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border: 1px solid; z-index: 2; }
+    .badge-featured { color: var(--ibm-cyan); border-color: var(--ibm-cyan); background: rgba(51,177,255,0.1); }
+    .badge-web { color: var(--ibm-blue); border-color: var(--ibm-blue); background: rgba(15,98,254,0.1); }
+    .project-content { padding: 24px; }
+    .project-number { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 8px; }
+    .project-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+    .project-card.featured .project-title { font-size: 22px; }
+    .project-desc { font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 20px; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .stack-tag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); padding: 4px 10px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-subtle); letter-spacing: 0.06em; }
+    .project-links { display: flex; gap: 12px; }
+    .project-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--ibm-blue); transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
+    .project-link:hover { color: var(--ibm-cyan); }
+
+    /* EXPERIENCE */
+    .experience-section { background: var(--bg-secondary); }
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before { content: ''; position: absolute; left: 0; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(to bottom, var(--ibm-blue), transparent); }
+    .timeline-item { position: relative; padding-bottom: 48px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot { position: absolute; left: -38px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-primary); border: 2px solid var(--ibm-blue); transition: background 0.3s; }
+    .timeline-item:hover .timeline-dot { background: var(--ibm-blue); box-shadow: 0 0 12px var(--accent-glow); }
+    .timeline-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+    .timeline-date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ibm-blue); letter-spacing: 0.1em; }
+    .timeline-type { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--text-muted); padding: 3px 10px; border: 1px solid var(--border-subtle); letter-spacing: 0.08em; text-transform: uppercase; }
+    .timeline-role { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .timeline-org { font-size: 14px; color: var(--ibm-cyan); margin-bottom: 12px; }
+    .timeline-points { list-style: none; margin-top: 12px; }
+    .timeline-points li { font-size: 14px; color: var(--text-secondary); padding: 5px 0; padding-left: 20px; position: relative; }
+    .timeline-points li::before { content: '→'; position: absolute; left: 0; color: var(--ibm-blue); font-size: 12px; }
+
+    /* CERTS */
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .cert-card { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .cert-card:hover { border-color: var(--ibm-blue); box-shadow: 0 8px 32px rgba(15,98,254,0.1); }
+    .cert-issuer-logo { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--ibm-blue); margin-bottom: 20px; font-weight: 600; }
+    .cert-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.35; }
+    .cert-date { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 16px; }
+    .cert-badge { display: inline-block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; padding: 4px 12px; color: #42be65; border: 1px solid #42be65; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(66,190,101,0.08); }
+    .cert-corner { position: absolute; top: 0; right: 0; width: 40px; height: 40px; background: linear-gradient(225deg, rgba(15,98,254,0.2) 0%, transparent 60%); }
+
+    /* CONTACT */
+    .contact-section { overflow: hidden; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .contact-info h2 { font-size: 48px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .contact-info h2 em { font-style: italic; color: var(--ibm-blue); font-family: 'IBM Plex Serif', serif; font-weight: 300; }
+    .contact-info p { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 40px; }
+    .contact-channels { display: flex; flex-direction: column; gap: 12px; }
+    .contact-channel { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 1px solid var(--border-subtle); text-decoration: none; transition: all 0.25s ease; color: var(--text-primary); }
+    .contact-channel:hover { border-color: var(--ibm-blue); background: rgba(15,98,254,0.05); }
+    .channel-icon { font-size: 20px; }
+    .channel-label { font-size: 11px; color: var(--text-muted); font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+    .channel-value { font-size: 14px; font-weight: 500; margin-top: 2px; }
+    .channel-arrow { margin-left: auto; color: var(--text-muted); transition: transform 0.2s; font-size: 18px; }
+    .contact-channel:hover .channel-arrow { transform: translateX(4px); color: var(--ibm-blue); }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .form-input, .form-textarea { background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; padding: 14px 16px; outline: none; transition: border-color 0.2s; resize: none; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--ibm-blue); }
+    .form-textarea { min-height: 120px; }
+    .ibm-target-note { background: rgba(15,98,254,0.08); border: 1px solid var(--border); padding: 16px 20px; margin-top: 8px; }
+    .ibm-target-note p { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--ibm-cyan); letter-spacing: 0.05em; margin: 0; line-height: 1.6; }
+
+    /* FOOTER */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border-subtle); padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; }
+    .footer-left { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; }
+    .footer-right { display: flex; gap: 24px; }
+    .footer-link { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; letter-spacing: 0.05em; }
+    .footer-link:hover { color: var(--ibm-blue); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 24px 80px; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-photo-wrap { width: 200px; margin: 0 auto; order: -1; }
+      .hero-photo-frame { width: 200px; height: 200px; }
+      .hero-stats { flex-direction: row; justify-content: flex-start; }
+      .section-wrap { padding: 64px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-visual { aspect-ratio: 3/2; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .skill-categories { flex-direction: row; flex-wrap: wrap; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-card.featured, .project-card.regular { grid-column: span 1; }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <a class="nav-logo" href="#hero">SCA<span>.DEV</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Hire Me →</a>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Available for Opportunities · Umingan, Pangasinan</div>
+        <h1 class="hero-name">
+          <span class="first">Shedrick</span>
+          <span class="last">Aquino.</span>
+        </h1>
+        <p class="hero-title">
+          <strong>Front-End Developer</strong> — BSIT Student<br/>
+          A Creative Developer Building <strong>Interactive Applications</strong>.
+        </p>
+        <p class="hero-desc">
+          Detail-oriented IT student combining technical software knowledge with design sensibility
+          to build digital tools that are easy to use and accessible to everyone.
+          Targeting a UI/UX Designer role at IBM Philippines.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary"><span>View My Work</span><span>↓</span></a>
+          <a href="#contact" class="btn-secondary"><span>Get In Touch</span><span>→</span></a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><div class="stat-num" data-count="2">0</div><div class="stat-label">Key Projects</div></div>
+          <div class="stat"><div class="stat-num" data-count="5">0</div><div class="stat-label">Languages</div></div>
+          <div class="stat"><div class="stat-num" data-count="4">0</div><div class="stat-label">Frameworks</div></div>
+        </div>
+      </div>
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-frame">
+          <img src="myimg.jpg" alt="Shedrick C. Aquino" />
+        </div>
+        <div class="hero-photo-label">Shedrick C. Aquino</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="about">
+    <div class="section-wrap">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-corner"></div>
+          <div class="about-corner-bl"></div>
+          <div class="about-visual-inner">
+            <img src="myimg.jpg" alt="Shedrick C. Aquino" />
+          </div>
+          <div class="about-visual-tag">
+            <p>Target Role</p>
+            <span>UI/UX Designer @ IBM Philippines</span>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <div class="section-tag">About Me</div>
+          <h2 class="section-title">Creative developer,<br/>design-driven builder.</h2>
+          <p style="margin-top: 20px;">
+            I'm Shedrick C. Aquino, a BSIT student from Umingan, Pangasinan with a strong foundation
+            in full-stack web development. I build practical, user-centered applications using Laravel,
+            Bootstrap, and modern JavaScript — blending technical skill with a designer's eye.
+          </p>
+          <p>
+            My goal is to grow as a UI/UX Designer at IBM Philippines, where I can combine my
+            software development background with my passion for creating digital tools that are
+            intuitive, accessible, and impactful. I believe good design is technology done right.
+          </p>
+          <div class="about-tags">
+            <span class="tag">PHP</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Python</span>
+            <span class="tag">Java</span>
+            <span class="tag">C#</span>
+            <span class="tag">Laravel</span>
+            <span class="tag">Bootstrap</span>
+            <span class="tag">MySQL</span>
+          </div>
+          <div class="about-detail">
+            <span class="about-detail-icon">🎓</span>
+            <div class="about-detail-text"><strong>Bachelor of Science in Information Technology</strong><br/>Currently Enrolled — University of Eastern Pangasinan</div>
+          </div>
+          <div class="about-detail">
+            <span class="about-detail-icon">📍</span>
+            <div class="about-detail-text"><strong>Zone 7, Flores, Umingan, Pangasinan</strong></div>
+          </div>
+          <div class="about-detail">
+            <span class="about-detail-icon">💼</span>
+            <div class="about-detail-text"><strong>Open to Work</strong> · Full-time opportunities</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="skills" class="skills-section">
+    <div class="section-wrap">
+      <div class="section-header reveal">
+        <div class="section-tag">Technical Expertise</div>
+        <h2 class="section-title">Skills & Technologies</h2>
+        <p class="section-sub">A curated stack built through coursework, projects, and self-directed learning.</p>
+      </div>
+      <div class="skills-layout reveal">
+        <div class="skill-categories">
+          <button class="skill-cat-btn active" onclick="showSkillPanel('languages')">Languages</button>
+          <button class="skill-cat-btn" onclick="showSkillPanel('frontend')">Frontend</button>
+          <button class="skill-cat-btn" onclick="showSkillPanel('backend')">Backend</button>
+          <button class="skill-cat-btn" onclick="showSkillPanel('tools')">Tools</button>
+        </div>
+        <div>
+          <div id="panel-languages" class="skills-panel active">
+            <div class="skills-grid">
+              <div class="skill-card"><div class="skill-icon">🐘</div><div class="skill-name">PHP</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">📜</div><div class="skill-name">JavaScript</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🐍</div><div class="skill-name">Python</div><div class="skill-level-label">Intermediate</div><div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">☕</div><div class="skill-name">Java</div><div class="skill-level-label">Intermediate</div><div class="skill-bar"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🔷</div><div class="skill-name">C#</div><div class="skill-level-label">Intermediate</div><div class="skill-bar"><div class="skill-bar-fill" style="width:62%"></div></div></div>
+            </div>
+          </div>
+          <div id="panel-frontend" class="skills-panel">
+            <div class="skills-grid">
+              <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-name">HTML5</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:88%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🎨</div><div class="skill-name">CSS3</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🅱️</div><div class="skill-name">Bootstrap</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:82%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">📱</div><div class="skill-name">Responsive Design</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+            </div>
+          </div>
+          <div id="panel-backend" class="skills-panel">
+            <div class="skills-grid">
+              <div class="skill-card"><div class="skill-icon">🔴</div><div class="skill-name">Laravel</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:82%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🗄️</div><div class="skill-name">MySQL</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🔗</div><div class="skill-name">REST APIs</div><div class="skill-level-label">Intermediate</div><div class="skill-bar"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+            </div>
+          </div>
+          <div id="panel-tools" class="skills-panel">
+            <div class="skills-grid">
+              <div class="skill-card"><div class="skill-icon">💡</div><div class="skill-name">VS Code</div><div class="skill-level-label">Proficient</div><div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div></div>
+              <div class="skill-card"><div class="skill-icon">🔧</div><div class="skill-name">Git</div><div class="skill-level-label">Intermediate</div><div class="skill-bar"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="projects">
+    <div class="section-wrap">
+      <div class="section-header reveal">
+        <div class="section-tag">Work</div>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-sub">Real-world systems built with production-quality code and enterprise thinking.</p>
+      </div>
+      <div class="projects-filter reveal">
+        <button class="filter-btn active" onclick="filterProjects('all', this)">All Projects</button>
+        <button class="filter-btn" onclick="filterProjects('web', this)">Web Apps</button>
+      </div>
+      <div class="projects-grid" id="projects-grid">
+        <div class="project-card featured reveal" data-category="web">
+          <div class="project-visual" style="background: linear-gradient(135deg, #0a0a1f, #0d1a3a);">
+            <div class="project-visual-bg"><img src="wrts.png" alt="Work Progress Tracking System"></div>
+            <div class="project-visual-overlay"></div>
+            <span class="project-badge badge-featured">Featured</span>
+          </div>
+          <div class="project-content">
+            <div class="project-number">01 — FULL-STACK WEB APP</div>
+            <h3 class="project-title">Work Progress Tracking System</h3>
+            <p class="project-desc">A full-stack web application built with Laravel to help teams track project tasks and deadlines efficiently. Features role-based dashboards, real-time task status updates, deadline monitoring, and a clean admin interface for managing team workflows.</p>
+            <div class="project-stack">
+              <span class="stack-tag">Laravel</span><span class="stack-tag">PHP</span><span class="stack-tag">Bootstrap</span><span class="stack-tag">MySQL</span><span class="stack-tag">JavaScript</span><span class="stack-tag">HTML5 / CSS3</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">⬡ View Demo →</a>
+              <a href="#" class="project-link">◈ GitHub →</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-card regular reveal" data-category="web">
+          <div class="project-visual" style="background: linear-gradient(135deg, #1a0808, #2e0d0d);">
+            <div class="project-visual-bg">
+              <img src="campid.png" alt="">
+            </div>
+            <div class="project-visual-overlay"></div>
+            <span class="project-badge badge-web">Web App</span>
+          </div>
+          <div class="project-content">
+            <div class="project-number">02 — WEB PLATFORM</div>
+            <h3 class="project-title">Campus ID Lost and Found System</h3>
+            <p class="project-desc">A web-based platform using Laravel and Bootstrap that lets students report missing IDs and allows campus staff to manage and track recovered items — reducing manual paperwork and improving campus-wide coordination.</p>
+            <div class="project-stack">
+              <span class="stack-tag">Laravel</span><span class="stack-tag">Bootstrap</span><span class="stack-tag">MySQL</span><span class="stack-tag">PHP</span><span class="stack-tag">CSS3</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">⬡ View Demo →</a>
+              <a href="#" class="project-link">◈ GitHub →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="experience" class="experience-section">
+    <div class="section-wrap">
+      <div class="section-header reveal">
+        <div class="section-tag">Background</div>
+        <h2 class="section-title">Education & Experience</h2>
+        <p class="section-sub">My academic journey building towards enterprise software development.</p>
+      </div>
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-meta"><span class="timeline-date">2023 — Present</span><span class="timeline-type">Education</span></div>
+          <div class="timeline-role">Bachelor of Science in Information Technology</div>
+          <div class="timeline-org">University of Eastern Pangasinan</div>
+          <ul class="timeline-points">
+            <li>Developing expertise in full-stack web development using PHP, Laravel, and JavaScript.</li>
+            <li>Built two key systems — a Work Progress Tracker and a Campus ID Lost and Found platform — as major academic projects.</li>
+            <li>Combining technical skills with UI/UX design principles, targeting IBM Philippines for a design-focused role.</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-meta"><span class="timeline-date">2017 — 2023</span><span class="timeline-type">Secondary Education</span></div>
+          <div class="timeline-role">Junior & Senior High School</div>
+          <div class="timeline-org">Umingan National High School · Poblacion West, Umingan Pangasinan</div>
+          <ul class="timeline-points">
+            <li>Completed secondary education with a strong foundation in mathematics and science.</li>
+            <li>Graduated July 2023, developing early interest in programming and digital design.</li>
+          </ul>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-meta"><span class="timeline-date">Graduated March 2016</span><span class="timeline-type">Elementary Education</span></div>
+          <div class="timeline-role">Elementary School</div>
+          <div class="timeline-org">Flores Elementary School · Flores, Umingan, Pangasinan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="contact" class="contact-section">
+    <div class="section-wrap">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <div class="section-tag">Get In Touch</div>
+          <h2>Let's build <em>great things</em> together.</h2>
+          <p>I'm currently looking for my first full-time role. Whether you're from IBM Philippines or another enterprise tech company — I'd love to connect and explore how I can contribute to your team.</p>
+          <div class="contact-channels">
+            <a href="mailto:aquinoshedrick0@gmail.com" class="contact-channel"><span class="channel-icon">📧</span><div><div class="channel-label">Email</div><div class="channel-value">aquinoshedrick0@gmail.com</div></div><span class="channel-arrow">→</span></a>
+            <a href="https://linkedin.com/in/shedrickaquino" target="_blank" class="contact-channel"><span class="channel-icon">💼</span><div><div class="channel-label">LinkedIn</div><div class="channel-value">linkedin.com/in/shedrickaquino</div></div><span class="channel-arrow">→</span></a>
+            <a href="tel:+63912-335-9368" class="contact-channel"><span class="channel-icon">📱</span><div><div class="channel-label">Phone</div><div class="channel-value">+63 912-335-9368</div></div><span class="channel-arrow">→</span></a>
+          </div>
+          <div class="ibm-target-note" style="margin-top: 24px;">
+            <p>⬡ Targeting: IBM Philippines · UI/UX Designer · Available Immediately</p>
+          </div>
+        </div>
+        <div class="contact-form reveal">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Your name" /></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Your surname" /></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="you@company.com" /></div>
+          <div class="form-group"><label class="form-label">Company / Organization</label><input type="text" class="form-input" placeholder="e.g. IBM Philippines" /></div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell me about the opportunity or just say hi..."></textarea></div>
+          <button class="btn-primary" onclick="handleFormSubmit(this)" style="width:100%;justify-content:center;border:none;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;">Send Message →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">© 2024 Shedrick C. Aquino</div>
+    <div class="footer-right">
+      <a href="#hero" class="footer-link">Back to Top ↑</a>
+      <a href="https://github.com/shedrickaquino" class="footer-link">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 60); });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    const counters = document.querySelectorAll('[data-count]');
+    const counterObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target; const target = +el.dataset.count; let current = 0;
+          const interval = setInterval(() => { current++; el.textContent = current; if (current >= target) clearInterval(interval); }, 80);
+          counterObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(el => counterObs.observe(el));
+
+    function showSkillPanel(id) {
+      document.querySelectorAll('.skills-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.skill-cat-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function filterProjects(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.project-card').forEach(card => {
+        if (cat === 'all' || card.dataset.category?.includes(cat)) {
+          card.style.display = ''; card.style.opacity = '0';
+          requestAnimationFrame(() => { card.style.transition = 'opacity 0.4s ease'; card.style.opacity = '1'; });
+        } else { card.style.display = 'none'; }
+      });
+    }
+
+    function handleFormSubmit(btn) {
+      const orig = btn.textContent; btn.textContent = 'Sending...'; btn.style.opacity = '0.7';
+      setTimeout(() => {
+        btn.textContent = '✓ Message Sent!'; btn.style.background = '#42be65'; btn.style.opacity = '1';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 3000);
+      }, 1500);
+    }
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+      navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--ibm-cyan)' : ''; });
+    });
+  </script>
+</body>
+</html>
